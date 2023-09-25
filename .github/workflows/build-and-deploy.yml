@@ -24,15 +24,6 @@ jobs:
       - name: Build
         run: npm run build
 
-#      - name: Prepare SSH
-#        run: |
-#          echo "$SSHKEY" > ssh_key
-#          chmod 600 ssh_key
-#          mkdir -p ~/.ssh
-#          touch ~/.ssh/known_hosts
-#          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-#          ssh -v -i ssh_key ${{ secrets.USERNAME }}@${{ secrets.HOST }}
-
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -44,6 +35,3 @@ jobs:
           target: /var/www/html/
           strip_components: 1
 
-#      - name: Deploy to VPS
-#        run: |
-#          scp -i ssh_key -r ./dist/* ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/var/www/html/
