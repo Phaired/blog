@@ -1,13 +1,15 @@
 ---
 import Layout from '../layouts/BlogPost.astro';
 
-const originalDate = new Date(import.meta.env.BUILD_DATE);
-const day = originalDate.getDate().toString().padStart(2, '0');
-const month = (originalDate.getMonth() + 1).toString().padStart(2, '0');
-const year = originalDate.getFullYear();
-const hours = originalDate.getHours().toString().padStart(2, '0');
-const minutes = originalDate.getMinutes().toString().padStart(2, '0');
-const formattedDate = `${day}/${month}/${year} ${hours}h${minutes}`;
+const originalDate : Date = new Date(import.meta.env.BUILD_DATE);
+const formattedDate : string = originalDate.toLocaleString('fr-FR', {
+	day: '2-digit',
+	month: '2-digit',
+	year: 'numeric',
+	hour: '2-digit',
+	minute: '2-digit',
+});
+
 ---
 
 <Layout
@@ -30,7 +32,7 @@ const formattedDate = `${day}/${month}/${year} ${hours}h${minutes}`;
 
 	<h4>Server Information</h4>
 
-	<p>This website is hosted on <a href="https://pulseheberg.com">pulseheberg</a>
-		and the last successful build date was on {formattedDate}.
+	<p>This website is hosted on <a href='https://pulseheberg.com'>pulseheberg</a>,
+		and the last successful update date was at {formattedDate}.
 	</p>
 </Layout>
