@@ -24,8 +24,8 @@ jobs:
       - name: Set timezone
         uses: szenius/set-timezone@v1.2
         with:
-          timezoneLinux: "Paris/Europe"
-          timezoneMacos: "Paris/Europe"
+          timezoneLinux: "Europe/Paris"
+          timezoneMacos: "Europe/Paris"
           timezoneWindows: "Paris Standard Time"
 
       - name: Set build date
