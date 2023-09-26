@@ -1,5 +1,13 @@
 ---
 import Layout from '../layouts/BlogPost.astro';
+
+const originalDate = new Date(import.meta.env.BUILD_DATE);
+const day = originalDate.getDate().toString().padStart(2, '0');
+const month = (originalDate.getMonth() + 1).toString().padStart(2, '0');
+const year = originalDate.getFullYear();
+const hours = originalDate.getHours().toString().padStart(2, '0');
+const minutes = originalDate.getMinutes().toString().padStart(2, '0');
+const formattedDate = `${day}/${month}/${year} ${hours}h${minutes}`;
 ---
 
 <Layout
@@ -19,4 +27,10 @@ import Layout from '../layouts/BlogPost.astro';
 
 	<h5>Master Informatique</h5>
 	<p>I am currently pursuing a Master's degree in computer science. This advanced program will further refine my expertise in the field and prepare me for a rewarding career in computer science, encompassing areas such as software development, data analysis, and artificial intelligence.</p>
+
+	<h4>Server Information</h4>
+
+	<p>This website is hosted on <a href="https://pulseheberg.fr">pulseheberg</a>
+		and the last successful build date was on {formattedDate}.
+	</p>
 </Layout>

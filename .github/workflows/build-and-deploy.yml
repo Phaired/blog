@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Set build date
+        run: echo 'BUILD_DATE="'$(date '+%Y-%m-%dT%H:%M:00')'"' > .env
+
       - name: Build
         run: npm run build
 
@@ -32,7 +35,7 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           port: ${{ secrets.PORT }}
           source: ./dist/*
-          target: /var/www/html/
+          target: ${{ secrets.SERVER_FOLDER }}
           strip_components: 1
           rm: true
 
