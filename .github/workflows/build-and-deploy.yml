@@ -35,7 +35,7 @@ jobs:
         run: npm run build
 
       - name: add robots.txt
-        run: echo 'User-agent:*' > robots.txt && echo 'Disallow:' >> robots.txt
+        run: echo 'User-agent:*' > robots.txt && echo 'Disallow:' >> ./dist/robots.txt
 
       - name: copy file via ssh password
         uses: appleboy/scp-action@v0.1.4
