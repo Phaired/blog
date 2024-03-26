@@ -2,7 +2,7 @@
 title: 'N-Body Simulation MPI'
 description: "C++ program using MPI for nbody simulation"
 pubDate: 'Jan 11 2024'
-heroImage: '/nbody-hero.png'
+heroImage: '/nbody/nbody-hero.png'
 ---
 ## N-Body Simulation
 
