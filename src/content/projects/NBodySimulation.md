@@ -2,67 +2,46 @@
 title: 'N-Body Simulation MPI'
 description: "C++ program using MPI for nbody simulation"
 pubDate: 'Jan 11 2024'
+updatedDate: 'April 2 2024'
 heroImage: '/projects/nbody/nbody-hero.png'
 ---
 ## N-Body Simulation
 
 ### Introduction
 
-Dans ce projet, nous explorons le problème des N-corps, un sujet classique en physique qui implique de calculer les
-mouvements de corps influencés par la gravitation. Notre but est de créer une simulation en 2D utilisant un système
-distribué pour optimiser les calculs. Plusieurs fois au cours de ce compte-rendu des positions/accélérations selon une
-troisième dimension peuvent-être référencées, ceci est dû à une perspective de développement du sujet initial que nous
-n'avons pas pu mener à terme en raison d'un manque de temps.
+In this project, we explore the problem of N-bodies, a classic subject in physics involving the calculation of movements of bodies influenced by gravity. Our goal is to create a 2D simulation using a distributed system to optimize computations. References to positions/accelerations in a third dimension may occur throughout this report due to a perspective of expanding the initial subject which we couldn’t complete due to time constraints.
 
-### Analyse du sujet
+### Subject Analysis
 
-Ce projet vise à développer une simulation de N-corps en utilisant la programmation parallèle avec MPI (Message Passing
-Interface) en C++. Cette approche est choisie pour gérer efficacement les calculs intensifs requis par le problème des
-N-corps (complexité O(nˆ2)), où la position et la vitesse de chaque corps céleste sont calculées en
-fonction de la gravité exercée par tous les autres corps.
+This project aims to develop an N-body simulation using parallel programming with MPI (Message Passing Interface) in C++. This approach is chosen to efficiently handle the intensive computations required by the N-body problem (complexity O(nˆ2)), where the position and velocity of each celestial body are calculated based on the gravity exerted by all other bodies.
 
-### Structures de Données et Algorithmes
+### Data Structures and Algorithms
 
-Le code utilise une structure `Body` pour représenter chaque corps avec ses propriétés (masse, position,
-vitesse). L'utilisation de C++ permet de stocker les données dans un `std::vector`.
+The code uses a `Body` structure to represent each body with its properties (mass, position, velocity). The use of C++ allows storing the data in an `std::vector`.
 
-La fonction principale, `calculateForces`, calcule les forces gravitationnelles exercées entre un sous-ensemble
-de corps et tous les autres corps de l'ensemble général. Chaque noeud appelant cette fonction exécutera ainsi les
-calculs uniquement sur son sous-ensemble de corps. La communication entre les processus est gérée par MPI, permettant
-une mise à jour synchronisée des positions et des vitesses de tous les corps après chaque étape de calcul.
+The main function, `calculateForces`, calculates gravitational forces exerted between a subset of bodies and all other bodies in the general set. Each node calling this function thus performs calculations only on its subset of bodies. Communication between processes is managed by MPI, allowing a synchronized update of the positions and velocities of all bodies after each calculation step.
 
-### Paradigme Retenu
+### Chosen Paradigm
 
-Le paradigme de programmation parallèle MPI est retenu pour ce projet. Il est justifié par la nature intrinsèquement
-parallèle du problème des N-corps, où les calculs pour chaque corps peuvent être effectués indépendamment des autres.
+The parallel programming MPI paradigm is chosen for this project. It is justified by the inherently parallel nature of the N-body problem, where calculations for each body can be performed independently of the others.
 
-Ici, l'utilisation d'un paradigme comme Map-Reduce ne ferait aucun sens car le volume de données utilisé dans la
-communication est relativement faible, la contrainte étant surtout sur le calcul des forces exercées sur chaque couple
-de particule.
+Here, the use of a paradigm like Map-Reduce would make no sense because the volume of data used in communication is relatively low, the constraint being primarily on the calculation of forces exerted on each pair of particles.
 
-Le projet nécessitant donc une grande capacité de calcul, le choix d'un langage bas niveau comme C++ (en comparaison à
-Java) est donc de rigueur. De plus, chaque noeud opèrera uniquement sur son sous-ensemble de données excluant de fait
-tout paradigme proposant une gestion de la concurrence.
+The project thus requiring a high computational capacity, the choice of a low-level language like C++ (compared to Java) is appropriate. Moreover, each node operates only on its subset of data, excluding any paradigm proposing concurrency management.
 
-L'utilisation de MPI permet d'exploiter cette parallélisation en répartissant les calculs sur plusieurs nœuds pour
-traiter efficacement des calculs de grande envergure.
+The use of MPI allows exploiting this parallelization by distributing calculations across multiple nodes to effectively process large-scale computations.
 
-### Décomposition en Sous-Problèmes
+### Decomposition into Sub-Problems
 
-Le problème est décomposé en plusieurs sous-problèmes :
+The problem is decomposed into several sub-problems:
 
-- Initialisation des corps
-- Calcul des forces/accélérations exercées sur chaque corps
-- Mise à jour des positions
+- Initialization of bodies
+- Calculation of forces/accelerations exerted on each body
+- Updating positions
 
-### Code d'initialisation des Corps
+### Body Initialization Code
 
-La fonction `initBodies` est utilisée pour initialiser un vecteur de structures `Body`. Chaque
-`Body` représente un objet dans l'espace, avec ses propriétés de masse, position et vitesse. Dans ce projet nous
-avons fais le choix de simuler un corps massif au centre d'un système de corps de masses plus faibles. Ce système de
-corps est généré à des positions aléatoires en anneau autour du corps massif. À des fins d'expérimentation, il est
-possible de modifier les paramètres d'accélération du corps massif et/ou des corps de plus petite masse (paramètres vx,
-vy et vz des corps).
+The `initBodies` function is used to initialize a vector of `Body` structures. Each `Body` represents an object in space, with its mass, position, and velocity properties. In this project, we have chosen to simulate a massive body at the center of a system of lighter mass bodies. This system of bodies is generated at random positions in a ring around the massive body. For experimental purposes, it is possible to modify the acceleration parameters of the massive body and/or the lighter mass bodies (vx, vy, and vz parameters of the bodies).
 
 ```cpp
 void initBodies(std::vector<Body>& bodies) {
@@ -97,10 +76,9 @@ void initBodies(std::vector<Body>& bodies) {
     }
 }
 ```
+*Function Initializing the Simulated Stellar System*
 
-*Fonction initialisant le système stellaire simulé*
-
-Structure Body :
+Body Structure:
 
 ```cpp
 struct Body {
@@ -116,37 +94,23 @@ struct Body {
 };
 ```
 
-#### Méthode calculateForces
+#### calculateForces Method
 
-La méthode `calculateForces` calcule les forces agissant sur un sous-ensemble d'objets (en fonction du rank) par
-rapport à l'ensemble global dans le vecteur de structures `Body`.
+The `calculateForces` method calculates the forces acting on a subset of objects (based on the rank) relative to the overall set in the `Body` structure vector.
 
-Cette méthode se base sur la formule de Newton :
+This method is based on Newton's formula:
 
 `
-F=G*(m1*m2)/(d^2)
+F = G * (m1 * m2) / (d^2)
 `
 
-La fonction prend en entrée un vecteur de `Body`, le rang (`rank`) du noeud actuel et le nombre total de
-noeuds (`numProcesses`). Elle commence par déterminer le sous-ensemble que chaque noeuds doit traiter. Ceci est
-réalisé en divisant le nombre total de corps par le nombre de noeuds, assignant ainsi à chacun une plage de corps sur
-laquelle travailler. Cette approche permet une répartition équilibrée du travail et optimise l'utilisation des
-ressources de calcul.
+The function takes a vector of `Body`, the rank (`rank`) of the current node, and the total number of nodes (`numProcesses`) as input. It begins by determining the subset each node should process. This is done by dividing the total number of bodies by the number of nodes, thus assigning each a range of bodies to work on. This approach allows for a balanced distribution of work and optimizes the use of computational resources.
 
-Pour chaque corps attribué à un noeud, la méthode calcule la force résultant de l'interaction avec tous les autre corps.
-Pour éviter le calcul de la force exercée sur un corps par lui-même, une condition (`if (i != j)`) est utilisée.
-La force est calculée en utilisant la formule de la gravitation universelle, où `dx` et `dy` représentent
-la différence de position entre deux corps. Une petite valeur `epsilon` est ajoutée au dénominateur pour éviter
-la division par zéro en cas de proximité extrême entre deux corps.
+For each body assigned to a node, the method calculates the force resulting from the interaction with all other bodies. To avoid calculating the force exerted on a body by itself, a condition (`if (i != j)`) is used. The force is calculated using the formula for universal gravitation, where `dx` and `dy` represent the difference in position between two bodies. A small value `epsilon` is added to the denominator to prevent division by zero in cases of extreme proximity between two bodies.
 
-Après le calcul de la force, la vitesse de chaque corps est mise à jour en conséquence. Cette mise à jour prend en
-compte la masse de chaque corps et utilise le multiplicateur de masse pour ajuster l'impact de la force sur la vitesse.
-La mise à jour de la vitesse est essentielle pour simuler le mouvement des corps en réponse aux forces qu'ils
-subissent.
+After calculating the force, the velocity of each body is updated accordingly. This update takes into account the mass of each body and uses the mass multiplier to adjust the impact of the force on the velocity. Updating the velocity is essential for simulating the movement of bodies in response to the forces they experience.
 
-Nous ajoutons une valeur (`epsilon`) à notre calcul de force pour limiter les valeurs aberrantes lorsque deux particules
-se retrouvent très proches. Cela limite les effets de force qui tendent vers l'infini à cause d'une division proche de
-0 .
+We add a value (`epsilon`) to our force calculation to limit outliers when two particles come very close. This limits the effects of forces that tend towards infinity due to a division close to 0.
 
 ```cpp
 void calculateForces(
@@ -181,13 +145,11 @@ void calculateForces(
 }
 ```
 
-Fonction de calcul des forces
+Force Calculation Function
 
-#### Méthode updatePositions
+#### updatePositions Method
 
-Pour chaque nœud, `updatePositions` met à jour la position en fonction de la vitesse actuelle et de l'intervalle de
-temps `dt` de chacun des corps de son sous-ensemble. Les nouvelles positions sont calculées en ajoutant le produit de la
-vitesse dans chaque direction (x, y) et du temps écoulé `dt` à la position actuelle.
+For each node, `updatePositions` updates the position based on the current velocity and the time interval `dt` for each of the bodies in its subset. The new positions are calculated by adding the product of the velocity in each direction (x, y) and the elapsed time `dt` to the current position.
 
 ```cpp
 void updatePositions(
@@ -208,104 +170,67 @@ void updatePositions(
     }
 }
 ```
+Body Position Update
 
-Mise à jour de la position des corps
+#### MPI Initialization
 
-#### Initialisation de MPI
+The simulation starts with the initialization of the MPI environment, which is essential for parallel operation:
 
-La simulation commence par l'initialisation de l'environnement MPI, qui est essentielle pour le fonctionnement
-parallèle :
+- `MPI_Init(&argc, &argv);` initializes MPI and allows each process to use MPI functions.
+- `MPI_Comm_rank` and `MPI_Comm_size` determine the rank and total number of processes in the communicator.
+- `MPI_Get_processor_name` retrieves the host name for each process.
+- `MPI_Comm_set_errhandler` sets the error handler for the communicator.
 
-- `MPI_Init(&argc, &argv);` initialise MPI et permet à chaque processus d'utiliser les fonctions MPI.
-- `MPI_Comm_rank` et `MPI_Comm_size` déterminent le rang et le nombre total de processus dans le communicateur.
-- `MPI_Get_processor_name` récupère le nom de l'hôte pour chaque processus.
-- `MPI_Comm_set_errhandler` définit le gestionnaire d'erreurs pour le communicateur.
+#### Simulation Setup
 
-#### Configuration de la Simulation
+The simulation parameters such as the time interval (`dt`), the total number of bodies (`total_bodies`), and the number of steps (`num_steps`) are defined. These parameters can be adjusted via command line arguments.
 
-Les paramètres de la simulation tels que l'intervalle de temps (`dt`), le nombre total de corps (`total_bodies`), et le
-nombre d'étapes (`num_steps`) sont définis. Ces paramètres peuvent être ajustés via les arguments de ligne de commande.
+#### Initialization and Broadcast of Bodies
 
-#### Initialisation et Broadcast des Corps
+Bodies are initialized in a `bodies` vector, and then the initial data are broadcast to all nodes via `MPI_Bcast`.
 
-Les corps sont initialisés dans un vecteur `bodies`, puis les données initiales sont diffusées à tous les nœuds
-via `MPI_Bcast`.
+#### Simulation Loop
 
-#### Boucle de Simulation
+The simulation is orchestrated within a `for` loop, where each iteration represents a step in the simulation. During these steps, specific MPI functions are used to ensure effective synchronization and communication between the different nodes. Here are the key MPI functions used in this loop:
 
-La simulation est orchestrée au sein d'une boucle `for`, où chaque itération représente une étape de la simulation. Au
-cours de ces étapes, des fonctions MPI spécifiques sont utilisées pour assurer la synchronisation et la communication
-efficaces entre les différents noeuds. Voici les fonctions MPI clés utilisées dans cette boucle :
+- `MPI_Bcast`: This function is used to broadcast body data from the main node (rank 0) to all other nodes. It ensures that each process starts each simulation step with the most recent data.
+- `MPI_Allgather`: After updating the positions and velocities of the bodies by each node, `MPI_Allgather` collects the updated data from all subsets of bodies processed by each node and distributes them to all nodes. This function is crucial to ensure that each node has a complete and updated set of data on all bodies for the next simulation step.
+- MPI Error Handling: Functions such as `MPI_Comm_set_errhandler` are used to define custom error handlers, allowing for better management of exceptions and error situations that may occur during parallel communication.
 
-- `MPI_Bcast` : Cette fonction est utilisée pour diffuser les données des corps depuis le noeud principal (rang 0) vers
-  tous les autres noeuds. Elle garantit que chaque processus commence chaque étape de la simulation avec les données les
-  plus récentes.
-- `MPI_Allgather` : Après la mise à jour des positions et des vitesses des corps par chaque noeud, `MPI_Allgather`
-  collecte les données mises à jour de tous les sous-ensembles de corps traités par chaque noeud et les distribue à tous
-  les noeuds. Cette fonction est cruciale pour assurer que chaque noeud dispose d'un ensemble complet et à jour de
-  données sur tous les corps pour la prochaine étape de simulation.
-- Gestion des Erreurs MPI : Des fonctions telles que `MPI_Comm_set_errhandler` sont utilisées pour définir des
-  gestionnaires d'erreurs personnalisés, permettant une meilleure gestion des exceptions et des situations d'erreur qui
-  peuvent survenir pendant la communication parallèle.
+#### Output Data Management
 
-#### Gestion des Données de Sortie
+The process of rank 0 manages an output buffer and a writing thread to record the results in a file. This approach minimizes writing operations and optimizes performance.
 
-Le processus de rang 0 gère un tampon de sortie et un thread d'écriture pour enregistrer les résultats dans un fichier.
-Cette approche minimise les opérations d'écriture et optimise les performances.
+#### Synchronization and Communication
 
-#### Synchronisation et Communication
+Functions such as `MPI_Allgather` are used to synchronize updated data among all nodes, ensuring that each process has the necessary information for the next simulation step.
 
-Des fonctions telles que `MPI_Allgather` sont utilisées pour synchroniser les données mises à jour entre tous
-les nœuds, assurant que chaque processus dispose des informations nécessaires pour la prochaine étape de la simulation.
+#### Finalization
 
-#### Finalisation
+At the end of the simulation, all MPI resources are cleaned up, and the MPI environment is finalized with the call to `MPI_Finalize`.
 
-À la fin de la simulation, toutes les ressources MPI sont nettoyées et l'environnement MPI est finalisé avec l'appel de
-`MPI_Finalize`.
+This breakdown allows the problem to be processed step by step, ensuring that each part is optimized and functions correctly in a parallel environment.
 
-Cette décomposition permet de traiter le problème étape par étape, en s'assurant que chaque partie est optimisée et
-fonctionne correctement dans un environnement parallèle.
+#### Conclusion of the Analysis
 
-#### Conclusion de l'Analyse
+The choice of C++ with MPI for this project is dictated by the need to manage large amounts of computations efficiently. The code structure, algorithmic choices, and parallel programming paradigm are all oriented towards achieving this goal, ensuring an accurate and efficient simulation of the N-body problem.
 
-Le choix de C++ avec MPI pour ce projet est dicté par la nécessité de gérer de grandes quantités de calculs de manière
-efficace. La structure du code, les choix algorithmiques et le paradigme de programmation parallèle sont tous orientés
-vers l'atteinte de cet objectif, en garantissant une simulation précise et performante du problème des N-corps.
+Here is a [video of the program visualizing the results](https://youtube.com/shorts/L-RjCFGIovc).
 
-Ci joint une [vidéo du programme de visualisation des résultats](https://youtube.com/shorts/L-RjCFGIovc)
+#### Hosts Script
 
-#### Script d'Hosts
+The script presented below aims to facilitate the identification and management of available hosts in a computer network. The main goal is to determine the number of processors available on each host, using an automated scripting approach. This script is written in Python and uses several modules, including `sys`, `subprocess`, `threading`, and `os`.
 
-Le script présenté ci-dessous vise à faciliter l'identification et la gestion des hôtes (hosts) disponibles dans un
-réseau informatique. L'objectif principal est de déterminer le nombre de processeurs disponibles sur chaque hôte, en
-utilisant une approche de script automatisé. Ce script est écrit en Python et utilise plusieurs modules,
-notamment `sys`, `subprocess`, `threading`, et `os`.
+The core of the script lies in the `handle_host` function, which attempts to connect to each specified host and retrieve the number of available threads. This function uses `ssh` for remote connections and `nproc` to obtain the thread count. The results are accumulated and recorded in a file, and the totals are calculated to give an overview of the network's processing capacity.
 
-Le cœur du script réside dans la fonction `handle_host`, qui tente de se connecter à chaque hôte spécifié et de
-récupérer le nombre de threads disponibles. Cette fonction utilise `ssh` pour les connexions à distance et `nproc` pour
-obtenir le compte de threads. Les résultats sont accumulés et enregistrés dans un fichier, et les totaux sont calculés
-pour donner une vue d'ensemble de la capacité de traitement du réseau.
+A threading mechanism is used to handle multiple hosts simultaneously, thereby enhancing the efficiency of the script. Finally, the script calculates and displays the average number of CPUs per computer, as well as the total number of available processors, providing a concise view of the network's resources.
 
-Un mécanisme de threading est utilisé pour traiter plusieurs hôtes simultanément, améliorant ainsi l'efficacité du
-script. Enfin, le script calcule et affiche le nombre moyen de CPU par ordinateur, ainsi que le total des processeurs
-disponibles, offrant une vue concise des ressources du réseau.
+In its initial version, the script did not include a multithreading mechanism, which limited its efficiency. The current version incorporates a threading mechanism to handle multiple hosts simultaneously, significantly improving the efficiency of the script. This improvement optimizes the processing and analysis time by parallelizing the tasks of connection and information retrieval. Finally, the script calculates and displays the average number of CPUs per computer, as well as the total number of available processors, providing a concise view of the network's resources.
 
-Dans sa version initiale, le script ne comprenait pas de mécanisme de multithreading, ce qui limitait son efficacité. La
-version actuelle intègre un mécanisme de threading pour traiter plusieurs hôtes simultanément, améliorant
-significativement l'efficacité du script. Cette amélioration permet d'optimiser le temps de traitement et d'analyse, en
-parallélisant les tâches de connexion et de récupération d'informations. Enfin, le script calcule et affiche le nombre
-moyen de CPU par ordinateur, ainsi que le total des processeurs disponibles, offrant une vue concise des ressources du
-réseau.
+#### Reduction of Calculation Time by Exploiting Symmetry in the Gravitational Formula
 
-#### Réduction du temps de calcul par exploitation de la symétrie dans la formule de la gravitation
+One potential improvement for reducing calculation time would have been to exploit a symmetry identified in the force calculations (the force between body A and B is the symmetry of the force between body B and A). This symmetry could have been exploited by an implementation in a ring. This solution was not chosen due to time constraints.
 
-Une possibilité d'amélioration du temps de calcul aurait été d'exploiter une symétrie mise en évidence lors du calcul
-des forces (la force entre un corps A et B est la symétrie de la force entre le corps B et A). Cette symétrie aurait pu
-être exploitée par une implémentation en anneau. Cette solution n'a pas été retenue par manque de temps.
+#### Fault Tolerance
 
-#### Tolérance aux pannes
-
-Grâce à l'implémentation C++ de OpenMPI, nous avions la possibilité de définir la gestion des erreurs avec la
-fonction `MPI_Comm_set_errhandler` sur le paramètre permettant d'envoyer une exception `MPI::Exception` quand une erreur
-est détectée. Cette option aurait permis d'identifier un noeud ne répondant plus, retirer ce noeud de la liste et
-relancer l'étape précédente de calcul. Cette solution n'a pas été retenue par manque de temps.
+With the C++ implementation of OpenMPI, we had the possibility to define error management with the function `MPI_Comm_set_errhandler` on the parameter allowing to send an `MPI::Exception` when an error is detected. This option would have allowed the identification of a non-responding node, remove this node from the list, and restart the previous calculation step. This solution was not chosen due to time constraints.
