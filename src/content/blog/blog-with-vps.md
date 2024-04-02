@@ -2,6 +2,7 @@
 title: 'Blog with VPS Hosting: A DIY Guide'
 description: "Learn How to Create Your Own Blog: A Step-by-Step Guide to Hosting Your Blog's Source Code on GitHub and Your Website on Any VPS of Your Choice"
 pubDate: 'Sept 25 2023'
+updatedDate: 'April 2 2024'
 heroImage: '/blog/blog-with-vps/blog-with-vps-hero.webp'
 ---
 
