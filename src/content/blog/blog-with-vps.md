@@ -61,4 +61,3 @@ The syntax of GitHub Actions is relatively straightforward. This action triggers
 For instance, the "Checkout code" step checks out the repository on the runner. The "Install Node.js" step installs Node.js, specifying version 20.
 
 The "Copy files via SCP" step is particularly noteworthy. SCP, or Secure Copy Protocol, is a method for securely transferring files between a local host and a remote host or between two remote hosts. In this action, we use the repository's secrets to securely transfer the built files to the server. The `appleboy/scp-action@v0.1.4` action simplifies this process, allowing for easy and secure file transfer using SSH credentials.
-
