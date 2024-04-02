@@ -2,7 +2,7 @@
 title: 'N-Body Simulation MPI'
 description: "C++ program using MPI for nbody simulation"
 pubDate: 'Jan 11 2024'
-heroImage: '/nbody/nbody-hero.png'
+heroImage: '/projects/nbody/nbody-hero.png'
 ---
 ## N-Body Simulation
 
@@ -64,7 +64,7 @@ corps est généré à des positions aléatoires en anneau autour du corps massi
 possible de modifier les paramètres d'accélération du corps massif et/ou des corps de plus petite masse (paramètres vx,
 vy et vz des corps).
 
-```C++
+```cpp
 void initBodies(std::vector<Body>& bodies) {
     if (!bodies.empty()) {
         bodies[0].mass = 100000.0;
@@ -102,7 +102,7 @@ void initBodies(std::vector<Body>& bodies) {
 
 Structure Body :
 
-```C++
+```cpp
 struct Body {
     double mass;
     double x, y, z; // Coordinates
@@ -148,7 +148,7 @@ Nous ajoutons une valeur (`epsilon`) à notre calcul de force pour limiter les v
 se retrouvent très proches. Cela limite les effets de force qui tendent vers l'infini à cause d'une division proche de
 0 .
 
-```C++
+```cpp
 void calculateForces(
     std::vector<Body>& bodies,
     int rank,
@@ -189,7 +189,7 @@ Pour chaque nœud, `updatePositions` met à jour la position en fonction de la v
 temps `dt` de chacun des corps de son sous-ensemble. Les nouvelles positions sont calculées en ajoutant le produit de la
 vitesse dans chaque direction (x, y) et du temps écoulé `dt` à la position actuelle.
 
-```C++
+```cpp
 void updatePositions(
     std::vector<Body>& bodies,
     double dt,
