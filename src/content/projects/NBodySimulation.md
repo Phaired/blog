@@ -1,10 +1,11 @@
 ---
-title: 'N-Body Simulation MPI'
+title: "N-Body Simulation MPI"
 description: "C++ program using MPI for nbody simulation"
-pubDate: 'Jan 11 2024'
-updatedDate: 'April 2 2024'
-heroImage: '/projects/nbody/nbody-hero.png'
+pubDate: "Jan 11 2024"
+updatedDate: "April 2 2024"
+heroImage: "/projects/nbody/nbody-hero.png"
 ---
+
 ## N-Body Simulation
 
 ### Introduction
@@ -35,9 +36,9 @@ The use of MPI allows exploiting this parallelization by distributing calculatio
 
 The problem is decomposed into several sub-problems:
 
-- Initialization of bodies
-- Calculation of forces/accelerations exerted on each body
-- Updating positions
+-   Initialization of bodies
+-   Calculation of forces/accelerations exerted on each body
+-   Updating positions
 
 ### Body Initialization Code
 
@@ -59,9 +60,9 @@ void initBodies(std::vector<Body>& bodies) {
     int internalDiameter = 40000;
 
     for (size_t i = 1; i < bodies.size(); ++i) {
-        double r = (internalDiameter + (rand() 
+        double r = (internalDiameter + (rand()
         % (externalDiameter - internalDiameter)));
-        
+
         double theta = (rand() % 360) * (M_PI / 180);
         double x = r * cos(theta);
         double y = r * sin(theta);
@@ -76,7 +77,8 @@ void initBodies(std::vector<Body>& bodies) {
     }
 }
 ```
-*Function Initializing the Simulated Stellar System*
+
+_Function Initializing the Simulated Stellar System_
 
 Body Structure:
 
@@ -87,7 +89,7 @@ struct Body {
     double vx, vy, vz; // Velocities
 
     Body() : mass(0), x(0), y(0), z(0), vx(0), vy(0), vz(0) {}
-    Body(double m, double _x, double _y, double _z, 
+    Body(double m, double _x, double _y, double _z,
     double _vx, double _vy, double _vz)
         : mass(m), x(_x), y(_y), z(_z), vx(_vx), vy(_vy), vz(_vz) {}
 
@@ -100,9 +102,7 @@ The `calculateForces` method calculates the forces acting on a subset of objects
 
 This method is based on Newton's formula:
 
-`
-F = G * (m1 * m2) / (d^2)
-`
+`F = G * (m1 * m2) / (d^2)`
 
 The function takes a vector of `Body`, the rank (`rank`) of the current node, and the total number of nodes (`numProcesses`) as input. It begins by determining the subset each node should process. This is done by dividing the total number of bodies by the number of nodes, thus assigning each a range of bodies to work on. This approach allows for a balanced distribution of work and optimizes the use of computational resources.
 
@@ -132,7 +132,7 @@ void calculateForces(
                 double dist = sqrt(dx * dx + dy * dy);
                 double epsilon = 1e-10;
                 double force = (
-                    G * bodies[i].mass * massMultiplier 
+                    G * bodies[i].mass * massMultiplier
                     * bodies[j].mass * massMultiplier
                 ) / (dist * dist * dist + epsilon);
                 double fx = force * dx;
@@ -170,16 +170,17 @@ void updatePositions(
     }
 }
 ```
+
 Body Position Update
 
 #### MPI Initialization
 
 The simulation starts with the initialization of the MPI environment, which is essential for parallel operation:
 
-- `MPI_Init(&argc, &argv);` initializes MPI and allows each process to use MPI functions.
-- `MPI_Comm_rank` and `MPI_Comm_size` determine the rank and total number of processes in the communicator.
-- `MPI_Get_processor_name` retrieves the host name for each process.
-- `MPI_Comm_set_errhandler` sets the error handler for the communicator.
+-   `MPI_Init(&argc, &argv);` initializes MPI and allows each process to use MPI functions.
+-   `MPI_Comm_rank` and `MPI_Comm_size` determine the rank and total number of processes in the communicator.
+-   `MPI_Get_processor_name` retrieves the host name for each process.
+-   `MPI_Comm_set_errhandler` sets the error handler for the communicator.
 
 #### Simulation Setup
 
@@ -193,9 +194,9 @@ Bodies are initialized in a `bodies` vector, and then the initial data are broad
 
 The simulation is orchestrated within a `for` loop, where each iteration represents a step in the simulation. During these steps, specific MPI functions are used to ensure effective synchronization and communication between the different nodes. Here are the key MPI functions used in this loop:
 
-- `MPI_Bcast`: This function is used to broadcast body data from the main node (rank 0) to all other nodes. It ensures that each process starts each simulation step with the most recent data.
-- `MPI_Allgather`: After updating the positions and velocities of the bodies by each node, `MPI_Allgather` collects the updated data from all subsets of bodies processed by each node and distributes them to all nodes. This function is crucial to ensure that each node has a complete and updated set of data on all bodies for the next simulation step.
-- MPI Error Handling: Functions such as `MPI_Comm_set_errhandler` are used to define custom error handlers, allowing for better management of exceptions and error situations that may occur during parallel communication.
+-   `MPI_Bcast`: This function is used to broadcast body data from the main node (rank 0) to all other nodes. It ensures that each process starts each simulation step with the most recent data.
+-   `MPI_Allgather`: After updating the positions and velocities of the bodies by each node, `MPI_Allgather` collects the updated data from all subsets of bodies processed by each node and distributes them to all nodes. This function is crucial to ensure that each node has a complete and updated set of data on all bodies for the next simulation step.
+-   MPI Error Handling: Functions such as `MPI_Comm_set_errhandler` are used to define custom error handlers, allowing for better management of exceptions and error situations that may occur during parallel communication.
 
 #### Output Data Management
 

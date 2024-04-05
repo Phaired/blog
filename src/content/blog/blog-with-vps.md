@@ -1,9 +1,9 @@
 ---
-title: 'Blog with VPS Hosting: A DIY Guide'
+title: "Blog with VPS Hosting: A DIY Guide"
 description: "Learn How to Create Your Own Blog: A Step-by-Step Guide to Hosting Your Blog's Source Code on GitHub and Your Website on Any VPS of Your Choice"
-pubDate: 'Sept 25 2023'
-updatedDate: 'April 2 2024'
-heroImage: '/blog/blog-with-vps/blog-with-vps-hero.webp'
+pubDate: "Sept 25 2023"
+updatedDate: "April 2 2024"
+heroImage: "/blog/blog-with-vps/blog-with-vps-hero.webp"
 ---
 
 ### Getting started
@@ -14,49 +14,50 @@ First, you will need a GitHub repository to host your source code. Next, install
 name: Build and Deploy
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+            - name: Install Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
+            - name: Install dependencies
+              run: npm ci
 
-      - name: Build
-        run: npm run build
+            - name: Build
+              run: npm run build
 
-      - name: Add robots.txt
-        run: echo 'User-agent:*' > ./dist/robots.txt && echo 'Disallow:' >> ./dist/robots.txt
+            - name: Add robots.txt
+              run: echo 'User-agent:*' > ./dist/robots.txt && echo 'Disallow:' >> ./dist/robots.txt
 
-      - name: Copy files via SCP
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSHKEY }}
-          port: ${{ secrets.PORT }}
-          source: ./dist/*
-          target: ${{ secrets.SERVER_FOLDER }}
-          strip_components: 1
-          rm: true
+            - name: Copy files via SCP
+              uses: appleboy/scp-action@v0.1.4
+              with:
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USERNAME }}
+                  key: ${{ secrets.SSHKEY }}
+                  port: ${{ secrets.PORT }}
+                  source: ./dist/*
+                  target: ${{ secrets.SERVER_FOLDER }}
+                  strip_components: 1
+                  rm: true
 ```
 
 The syntax of GitHub Actions is relatively straightforward. This action triggers on a push to the **main** branch. The job, named `deploy`, runs on Ubuntu. Each step includes a **name**, **uses** or **run**, and sometimes **with**:
-- **name**: simply the identifier for the step in the logs
-- **uses**: invokes a pre-existing action
-- **run**: executes a command in the CLI
-- **with**: specifies parameters for the step
+
+-   **name**: simply the identifier for the step in the logs
+-   **uses**: invokes a pre-existing action
+-   **run**: executes a command in the CLI
+-   **with**: specifies parameters for the step
 
 For instance, the "Checkout code" step checks out the repository on the runner. The "Install Node.js" step installs Node.js, specifying version 20.
 
