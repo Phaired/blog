@@ -5,9 +5,11 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type entry = 'blog'|'projects'
+type Props = CollectionEntry<entry>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+
+const { title, description, pubDate, updatedDate, heroImage } : Props = Astro.props;
 ---
 
 <html lang="en">
