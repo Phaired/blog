@@ -8,6 +8,16 @@
 	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
 	--box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
 		0 16px 32px rgba(var(--gray), 33%);
+
+	--color-text: 15, 18, 25;
+	--color-text-title: 25, 28, 35;
+	--color-text-hover: 34, 41, 57;
+	--gradient-bg: rgba(var(--gray-light), 50%), #fff;
+	--bg-color-accent: 235, 235, 235;
+	--bg-color: 245, 245, 245;
+	--color-date: 96, 115, 159;
+	--bg-color-code: 229, 233, 240;
+
 }
 @font-face {
 	font-family: 'Atkinson';
@@ -32,7 +42,7 @@ body {
 	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
+	color: rgb(var(--color-text));
 	font-size: 20px;
 	line-height: 1.7;
 }
@@ -41,6 +51,7 @@ main {
 	max-width: calc(100% - 2em);
 	margin: auto;
 	padding: 3em 1em;
+	background-color: rgb(var(--bg-color));
 }
 h1,
 h2,
@@ -49,7 +60,7 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: rgb(var(--color-text-title));
 	line-height: 1.2;
 }
 h1 {
@@ -79,9 +90,12 @@ a:hover {
 }
 p {
 	margin-bottom: 1em;
+	color: rgb(var(--color-text));
 }
 .prose p {
 	margin-bottom: 2em;
+	color: rgb(var(--color-text));
+
 }
 textarea {
 	width: 100%;
@@ -100,7 +114,7 @@ img {
 }
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
+	background-color: rgb(var(--bg-color-code));
 	border-radius: 2px;
 }
 pre {
@@ -118,7 +132,7 @@ blockquote {
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid rgb(var(--bg-color-code));
 }
 @media (max-width: 720px) {
 	body {
