@@ -38,8 +38,7 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background-color: rgb(var(--bg-color));
-
+	background: rgb(var(--bg-color));
 	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
