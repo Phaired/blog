@@ -54,12 +54,12 @@ const posts = (await getCollection('projects')).sort(
 		}
 		.title {
 			margin: 0;
-			color: rgb(var(--black));
+			color: rgb(var(--color-text));
 			line-height: 1;
 		}
 		.date {
 			margin: 0;
-			color: rgb(var(--gray));
+			color: rgb(var(--color-date));
 		}
 		ul li a:hover h4,
 		ul li a:hover .date {
@@ -84,6 +84,7 @@ const posts = (await getCollection('projects')).sort(
 			}
 		}
 	</style>
+
 </head>
 <body>
 <Header />
