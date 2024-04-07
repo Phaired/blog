@@ -13,6 +13,7 @@
     "@astrojs/mdx": "^2.2.3",
     "@astrojs/rss": "^4.0.5",
     "@astrojs/sitemap": "^3.1.2",
-    "astro": "^4.5.13"
+    "astro": "^4.5.13",
+    "word-count": "^0.2.2"
   }
 }

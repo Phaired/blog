@@ -1,0 +1,17 @@
+---
+import wordCount from 'word-count';
+interface Props {
+    body: string;
+}
+
+const { body }: Props = Astro.props;
+const calculateReadingTime = (postContent) => {
+    const wordsPerMinute = 200; // Average reading speed
+	const contentAsString = postContent || ''; // Ensure the content is a string
+	const wordCountInPost = wordCount(contentAsString);
+    const readingTime = Math.ceil(wordCountInPost / wordsPerMinute);
+    return `${readingTime} ${readingTime > 1 ? "mins" : "min"} read`;
+    };
+---
+
+{calculateReadingTime(body)}
