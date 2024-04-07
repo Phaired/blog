@@ -14,7 +14,7 @@ const { title, description, pubDate, updatedDate, heroImage, heroGif } : Props =
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} image={heroGif ? heroGif : heroImage} />
+		<BaseHead title={title} description={description} image={heroGif !== null ? heroGif : heroImage} />
 		<style>
 			main {
 				width: calc(100% - 2em);
