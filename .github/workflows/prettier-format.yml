@@ -16,5 +16,5 @@ jobs:
       - name: Prettify code
         uses: phaired/prettier_action@v0.1.0-alpha
         with:
-          prettier_options: --write **/*.{js,md,astro,ts} --tab-width 4 --plugin=prettier-plugin-astro
+          prettier_options: --write **/*.{js,md,astro,ts} --tab-width 4
           prettier_plugins: prettier-plugin-astro
