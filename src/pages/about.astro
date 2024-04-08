@@ -1,38 +1,58 @@
 ---
-import Layout from '../layouts/Post.astro';
+import Layout from "../layouts/Post.astro";
 
-const originalDate : Date = new Date(import.meta.env.BUILD_DATE);
-const formattedDate : string = originalDate.toLocaleString('fr-FR', {
-	day: '2-digit',
-	month: '2-digit',
-	year: 'numeric',
-	hour: '2-digit',
-	minute: '2-digit',
+const originalDate: Date = new Date(import.meta.env.BUILD_DATE);
+const formattedDate: string = originalDate.toLocaleString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
 });
-
 ---
 
 <Layout
-	title="About Me"
-	description="More information about me."
-	pubDate={new Date('September 25 2023')}
-	heroImage=""
+    title="About Me"
+    description="More information about me."
+    pubDate={new Date("September 25 2023")}
+    heroImage=""
 >
-	<h4>My Academic Journey</h4>
-	<p>After completing my baccalauréat, I embarked on a journey of academic growth and specialization in the field of computer science and information technology.</p>
+    <h4>My Academic Journey</h4>
+    <p>
+        After completing my baccalauréat, I embarked on a journey of academic
+        growth and specialization in the field of computer science and
+        information technology.
+    </p>
 
-	<h5>BTS Systèmes Numériques</h5>
-	<p>I pursued a <em>BTS Systèmes Numériques</em>, a two-year program that provided me with a strong foundation in digital technologies, including electronics, computer science, and telecommunications.</p>
+    <h5>BTS Systèmes Numériques</h5>
+    <p>
+        I pursued a <em>BTS Systèmes Numériques</em>, a two-year program that
+        provided me with a strong foundation in digital technologies, including
+        electronics, computer science, and telecommunications.
+    </p>
 
-	<h5>Licence Profession Métier de l'Informatique Application Web</h5>
-	<p>Building on my BTS, I enrolled in a Bachelor's degree program with a professional focus on web application development. This program equipped me with the skills and knowledge necessary for web development, including languages, frameworks, and best practices.</p>
+    <h5>Licence Profession Métier de l'Informatique Application Web</h5>
+    <p>
+        Building on my BTS, I enrolled in a Bachelor's degree program with a
+        professional focus on web application development. This program equipped
+        me with the skills and knowledge necessary for web development,
+        including languages, frameworks, and best practices.
+    </p>
 
-	<h5>Master Informatique</h5>
-	<p>I am currently pursuing a Master's degree in computer science. This advanced program will further refine my expertise in the field and prepare me for a rewarding career in computer science, encompassing areas such as software development, data analysis, and artificial intelligence.</p>
+    <h5>Master Informatique</h5>
+    <p>
+        I am currently pursuing a Master's degree in computer science. This
+        advanced program will further refine my expertise in the field and
+        prepare me for a rewarding career in computer science, encompassing
+        areas such as software development, data analysis, and artificial
+        intelligence.
+    </p>
 
-	<h4>Server Information</h4>
+    <h4>Server Information</h4>
 
-	<p>This website is hosted on <a href='https://pulseheberg.com'>pulseheberg</a>,
-		and the last successful update date was at {formattedDate}.
-	</p>
+    <p>
+        This website is hosted on <a href="https://pulseheberg.com"
+            >pulseheberg</a
+        >, and the last successful update date was at {formattedDate}.
+    </p>
 </Layout>
