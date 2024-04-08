@@ -98,16 +98,17 @@ const { title, description, pubDate, updatedDate, heroImage, heroGif }: Props =
             </article>
         </main>
         <Footer />
-    </body><script is:inline>
-        function loadGif() {
-            const heroImg = document.getElementById("heroImg");
-            if (heroImg && heroImg.dataset.src) {
-                heroImg.src = heroImg.dataset.src;
+        <script is:inline>
+            function loadGif() {
+                const heroImg = document.getElementById("heroImg");
+                if (heroImg && heroImg.dataset.src) {
+                    heroImg.src = heroImg.dataset.src;
+                }
             }
-        }
 
-        if (typeof window !== "undefined") {
-            window.onload = loadGif;
-        }
-    </script>
+            if (typeof window !== "undefined") {
+                window.onload = loadGif;
+            }
+        </script>
+    </body>
 </html>
