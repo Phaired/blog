@@ -1,44 +1,50 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 const age = () => {
-	const birthdate = new Date('2001-03-25');
-	return Math.floor((new Date() - birthdate) / (365.25*24*60*60*1000));
-}
+    const birthdate = new Date("2001-03-25");
+    return Math.floor(
+        (new Date() - birthdate) / (365.25 * 24 * 60 * 60 * 1000),
+    );
+};
 ---
-
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header title={SITE_TITLE} />
-		<main>
-			<h2>👨🏻‍💻 Hello !</h2>
-			<p>
-				Hello, everyone! Welcome to my blog. I'm Remy, and I'm thrilled to have you here.
-				In this short presentation, I'd like to introduce myself and share a bit about who I am and what I'm passionate about.
-			</p>
-			<h3>Who am I ?</h3>
-			<p>
-				I am {age} years old.
-				Born in Dijon (France) where I'm currently pursuing a Master's degree in Computer Science.
-				Additionally, I am working as an intern in a company related to my Master's degree.
-			</p>
-			<h3>Why this blog ?</h3>
-			<p>
-				I want to enhance my ability to write and share articles about topics I find personally intriguing and that I believe are worth sharing.
-			</p>
-			<h3>What I would like to share ?</h3>
-			<p>
-				I'd like to mention my homelab, which I plan to discuss in an upcoming blog post,
-				along with some projects that I'll delve into at a later time.
-			</p>
-		</main>
-		<Footer />
-	</body>
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <Header title={SITE_TITLE} />
+        <main>
+            <h2>👨🏻‍💻 Hello !</h2>
+            <p>
+                Hello, everyone! Welcome to my blog. I'm Remy, and I'm thrilled
+                to have you here. In this short presentation, I'd like to
+                introduce myself and share a bit about who I am and what I'm
+                passionate about.
+            </p>
+            <h3>Who am I ?</h3>
+            <p>
+                I am {age} years old. Born in Dijon (France) where I'm currently
+                pursuing a Master's degree in Computer Science. Additionally, I am
+                working as an intern in a company related to my Master's degree.
+            </p>
+            <h3>Why this blog ?</h3>
+            <p>
+                I want to enhance my ability to write and share articles about
+                topics I find personally intriguing and that I believe are worth
+                sharing.
+            </p>
+            <h3>What I would like to share ?</h3>
+            <p>
+                I'd like to mention my homelab, which I plan to discuss in an
+                upcoming blog post, along with some projects that I'll delve
+                into at a later time.
+            </p>
+        </main>
+        <Footer />
+    </body>
 </html>
