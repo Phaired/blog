@@ -2,7 +2,7 @@
 title: "Steganography OCaml"
 description: "OCaml program for steganography"
 pubDate: "April 30 2024"
-updatedDate: "April 30 2024"
+updatedDate: "Sept 23 2024"
 heroImage: "/projects/steganography/steganography-hero.png"
 heroGif: ""
 ---
