@@ -2,7 +2,7 @@
 title: "Steganography OCaml"
 description: "OCaml program for steganography"
 pubDate: "April 30 2024"
-updatedDate: "April 30 2024"
+updatedDate: "Sept 23 2024"
 heroImage: "/projects/steganography/steganography-hero.png"
 heroGif: ""
 ---
@@ -20,7 +20,7 @@ The hidden message is also encrypted using the RSA algorithm to ensure its secur
 One method to discreetly encode the message into the image is by embedding the message into the least significant bits of each color channel of each pixel. This allows encoding 3 bits of data per pixel. A pixel represents 3 colors (RGB), each encoded with 8 bits, totaling 24 bits per pixel. Thus, a 100x100 pixel image can accommodate 30,000 bits of data.
 
 ![Figure 1.1](/projects/steganography/leastbit.png)
-*Figure 1.1: Modification of the least significant bit for each pixel.*
+_Figure 1.1: Modification of the least significant bit for each pixel._
 
 One initial approach for encoding the message, given its variable length, is to read the entire image: this ensures retrieval of the entire message in all cases, but the message will contain noise after its end (unaltered least significant bits). An improvement would be to write/read only up to the message length.
 
@@ -31,9 +31,10 @@ To ensure message security, it is encrypted with RSA. The encrypted message is c
 ## 3. Encoding in the Image
 
 A Portable Bitmap Format (PPM) image is a simple, uncompressed image structure containing a header with 3 lines:
-- Image type indicating if the image is binary or ASCII; we use the binary type `P6`.
-- Image width and height.
-- Maximum value for each color (255 in this case).
+
+-   Image type indicating if the image is binary or ASCII; we use the binary type `P6`.
+-   Image width and height.
+-   Maximum value for each color (255 in this case).
 
 Following the header, each pixel's RGB values are listed.
 
@@ -96,15 +97,15 @@ let insert_message file_path message =
 
 The `overwrite_last_bit` function modifies the last bit of a byte based on the provided bit ('0' or '1'). It uses a basic logical operation (AND or OR), executed in constant time.
 
-- **Time Complexity:** O(1), as it performs a comparison and a binary operation regardless of input size.
-- **Space Complexity:** O(1), as it uses a fixed amount of space with no additional space required based on input size.
+-   **Time Complexity:** O(1), as it performs a comparison and a binary operation regardless of input size.
+-   **Space Complexity:** O(1), as it uses a fixed amount of space with no additional space required based on input size.
 
 #### Complexity of the Byte Processing Loop
 
 The loop iterates over each byte of the image to insert the encoded message bits, with complexity primarily dependent on the number of bytes in the image.
 
-- **Time Complexity:** O(n), where _n_ is the total number of bytes in the image (width × height × 3). Each iteration calls `overwrite_last_bit`, which runs in constant time, making the total time linear with respect to _n_.
-- **Space Complexity:** O(1). The loop uses a constant amount of space for variables like byte index and bit index, independent of image size or message length.
+-   **Time Complexity:** O(n), where _n_ is the total number of bytes in the image (width × height × 3). Each iteration calls `overwrite_last_bit`, which runs in constant time, making the total time linear with respect to _n_.
+-   **Space Complexity:** O(1). The loop uses a constant amount of space for variables like byte index and bit index, independent of image size or message length.
 
 ## 4. Message Encryption with RSA
 
@@ -122,38 +123,37 @@ Key generation involves the following steps:
 
 3. **Calculate Euler's Totient Function $\phi(n)$:**
 
-   $$
-   \phi(n) = (p - 1) \times (q - 1)
-   $$
+    $$
+    \phi(n) = (p - 1) \times (q - 1)
+    $$
 
 4. **Choose Public Exponent _e_:**  
    Choose $e$ such that $1 < e < \phi(n)$ and $\gcd(e, \phi(n)) = 1$. A common choice for $e$ is $65537$.
 
 5. **Calculate Private Exponent _d_:** $d$ is the modular inverse of $e$ modulo $\phi(n)$, meaning
 
-   $$
-   d \times e \equiv 1 \pmod{\phi(n)}
-   $$
+    $$
+    d \times e \equiv 1 \pmod{\phi(n)}
+    $$
 
 ### 4.2 Keys
 
-- **Public Key:** Composed of $(n, e)$.
+-   **Public Key:** Composed of $(n, e)$.
 
-- **Private Key:** Composed of $(n, d)$.
-
+-   **Private Key:** Composed of $(n, d)$.
 
 ### 4.3 Encryption and Decryption
 
-- **Encryption:** To encrypt a message _m_ (where _m_ is an integer smaller than _n_), compute:
+-   **Encryption:** To encrypt a message _m_ (where _m_ is an integer smaller than _n_), compute:
 
 $$ c = m^e \mod n $$
 
 where _c_ is the ciphertext.
 
-- **Decryption:** To decrypt _c_ using the private key:
+-   **Decryption:** To decrypt _c_ using the private key:
 
 $$ m = c^d \mod n $$
-  
+
 where _m_ is the original message.
 
 ### 4.4 Security
@@ -192,24 +192,24 @@ Encryption and decryption processes involve converting the message into an integ
 
 ### 4.7 Utilities and Miscellaneous Operations
 
-- **Coprimality Test (`coprime`):** Checks if two numbers are coprime by computing their GCD.
-- **Serialization and File Writing:** Converts data structures into string format and writes them to files for later use.
+-   **Coprimality Test (`coprime`):** Checks if two numbers are coprime by computing their GCD.
+-   **Serialization and File Writing:** Converts data structures into string format and writes them to files for later use.
 
 ### 4.8 Complexity
 
 #### Key Generation
 
-- **Prime Generation (`prime_gen`):** Uses the Miller-Rabin primality test, a probabilistic algorithm. The time complexity is dominated by modular exponentiations, denoted as O(k · log³ n), where _k_ is the number of trials and _n_ is the number being tested.
-- **Private Key Generation (`private_key_gen`):** Involves calculating _n = p × q_ and ϕ = (p−1)(q−1), followed by determining the private exponent _d_ via modular inversion, with a complexity of O(log² n).
+-   **Prime Generation (`prime_gen`):** Uses the Miller-Rabin primality test, a probabilistic algorithm. The time complexity is dominated by modular exponentiations, denoted as O(k · log³ n), where _k_ is the number of trials and _n_ is the number being tested.
+-   **Private Key Generation (`private_key_gen`):** Involves calculating _n = p × q_ and ϕ = (p−1)(q−1), followed by determining the private exponent _d_ via modular inversion, with a complexity of O(log² n).
 
 #### Encryption and Decryption
 
-- **Encryption (`plaintext_encrypt`):** Utilizes modular exponentiation with a time complexity of O(log _e_), where _e_ is the public exponent, typically chosen to be small to optimize speed.
+-   **Encryption (`plaintext_encrypt`):** Utilizes modular exponentiation with a time complexity of O(log _e_), where _e_ is the public exponent, typically chosen to be small to optimize speed.
 
 #### Miscellaneous Operations
 
-- **Coprimality Test (`coprime`):** Implements GCD calculation with logarithmic time complexity relative to the input sizes.
-- **Serialization and File Writing:** Involves I/O operations that may impact performance based on the file system used.
+-   **Coprimality Test (`coprime`):** Implements GCD calculation with logarithmic time complexity relative to the input sizes.
+-   **Serialization and File Writing:** Involves I/O operations that may impact performance based on the file system used.
 
 ## 5. Results
 
@@ -229,18 +229,18 @@ remybarranco@MacBook-Pro-de-Remy Projet-Algo %
 
 **Benchmark with 100 Iterations Each:**
 
-| Data Size              | Operation | Time (seconds) |
-|------------------------|-----------|-----------------|
-| 10 characters (512x512 image) | Encoding   | 1.520           |
-|                        | Decoding  | 0.020           |
-| 100 characters (512x512 image)| Encoding   | 1.360           |
-|                        | Decoding  | 0.020           |
-| 10 characters (5184×3456 image)| Encoding   | 1.920           |
-|                        | Decoding  | 0.020           |
-| 100 characters (5184×3456 image)| Encoding   | 1.820           |
-|                        | Decoding  | 0.020           |
+| Data Size                        | Operation | Time (seconds) |
+| -------------------------------- | --------- | -------------- |
+| 10 characters (512x512 image)    | Encoding  | 1.520          |
+|                                  | Decoding  | 0.020          |
+| 100 characters (512x512 image)   | Encoding  | 1.360          |
+|                                  | Decoding  | 0.020          |
+| 10 characters (5184×3456 image)  | Encoding  | 1.920          |
+|                                  | Decoding  | 0.020          |
+| 100 characters (5184×3456 image) | Encoding  | 1.820          |
+|                                  | Decoding  | 0.020          |
 
-*Table 1.1: Encoding and Decoding Times for Different Data Sizes*
+_Table 1.1: Encoding and Decoding Times for Different Data Sizes_
 
 ## 6. Conclusion
 
@@ -250,8 +250,8 @@ Although RSA was covered in the cryptography course, we encountered it just befo
 
 ## 7. References
 
-- [RSA-by-OCaml](https://github.com/MingLLuo/RSA-by-OCaml)
-- ChatGPT
+-   [RSA-by-OCaml](https://github.com/MingLLuo/RSA-by-OCaml)
+-   ChatGPT
 
 ---
 
@@ -409,5 +409,3 @@ let encrypt_and_return_message message rc =
   in
   String.concat " " (encode_blocks message [])
 ```
-
-
