@@ -7,4 +7,15 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
 	site: 'https://remybarranco.fr',
 	integrations: [mdx(), sitemap()],
+	markdown: {
+		remarkPlugins: [
+			'remark-math',
+		],
+		rehypePlugins: [
+			['rehype-katex', {
+				trust: true
+				// Katex plugin options
+			}]
+		]
+	}
 });
