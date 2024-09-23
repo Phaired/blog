@@ -103,7 +103,7 @@ The `calculateForces` method calculates the forces acting on a subset of objects
 
 This method is based on Newton's formula:
 
-`F = G * (m1 * m2) / (d^2)`
+$$ F = G * (m1 * m2) / (d^2) $$
 
 The function takes a vector of `Body`, the rank (`rank`) of the current node, and the total number of nodes (`numProcesses`) as input. It begins by determining the subset each node should process. This is done by dividing the total number of bodies by the number of nodes, thus assigning each a range of bodies to work on. This approach allows for a balanced distribution of work and optimizes the use of computational resources.
 
