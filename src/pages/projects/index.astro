@@ -6,6 +6,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import FormattedDate from "../../components/FormattedDate.astro";
 import ReadingTime from "../../components/ReadingTime.astro";
+import { ViewTransitions } from 'astro:transitions';
 
 const posts = (await getCollection("projects")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -15,6 +16,7 @@ const posts = (await getCollection("projects")).sort(
 <!doctype html>
 <html lang="en">
     <head>
+        <ViewTransitions/>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
         <style>
             main {
