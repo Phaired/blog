@@ -17,11 +17,15 @@ jobs:
         with:
           node-version: 20
 
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
 
       - name: Run Prettier
         run: |
-          npm i --save-dev prettier prettier-plugin-astro
-          npx prettier --write **/*.{js,md,astro,ts} --tab-width 4
+          pnpm i --save-dev prettier prettier-plugin-astro
+          pnpm dlx prettier --write **/*.{js,md,astro,ts} --tab-width 4
 
       - uses: EndBug/add-and-commit@v9
         with:
