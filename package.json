@@ -19,6 +19,7 @@
     "word-count": "^0.2.2"
   },
   "devDependencies": {
+    "astro-compress": "^2.3.5",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1"
   }
