@@ -1,6 +1,7 @@
 ---
 const { heroImage, heroGif } = Astro.props;
 ---
+
 <style>
     .hero-image {
         position: relative;
@@ -34,19 +35,16 @@ const { heroImage, heroGif } = Astro.props;
 </style>
 
 <div class="hero-image">
-    <img
-            class="hero-png"
-            src={heroImage}
-            alt="Hero Image"
-            loading="lazy"
-    />
-    {heroGif && (
+    <img class="hero-png" src={heroImage} alt="Hero Image" loading="lazy" />
+    {
+        heroGif && (
             <img
-                    class="hero-gif"
-                    src={heroGif}
-                    alt="Animated Hero Image"
-                    loading="lazy"
-                    onload="this.classList.add('visible');"
+                class="hero-gif"
+                src={heroGif}
+                alt="Animated Hero Image"
+                loading="lazy"
+                onload="this.classList.add('visible');"
             />
-    )}
+        )
+    }
 </div>
