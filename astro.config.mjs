@@ -1,34 +1,36 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
-
 import sitemap from '@astrojs/sitemap';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
-
-// https://astro.build/config
 export default defineConfig({
     site: 'https://remybarranco.fr',
-    integrations: [mdx(), sitemap(), (await import("astro-compress")).default({
-        CSS: true,
-        HTML: {
-            "html-minifier-terser": {
-                removeAttributeQuotes: false,
+    integrations: [
+        mdx(),
+        sitemap(),
+        (await import('astro-compress')).default({
+            CSS: true,
+            HTML: {
+                'html-minifier-terser': {
+                    removeAttributeQuotes: false,
+                },
             },
-        },
-        Image: false,
-        JavaScript: true,
-        SVG: false,
-    }),
+            Image: false,
+            JavaScript: true,
+            SVG: false,
+        }),
     ],
-
     markdown: {
-        remarkPlugins: [
-            'remark-math',
-        ],
+        remarkPlugins: [remarkMath],
         rehypePlugins: [
-            ['rehype-katex', {
-                trust: true
-                // Katex plugin options
-            }]
-        ]
-    }
+            [
+                rehypeKatex,
+                {
+                    trust: true,
+                    // Additional KaTeX plugin options can be added here
+                },
+            ],
+        ],
+    },
 });

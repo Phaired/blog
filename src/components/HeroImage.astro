@@ -1,0 +1,52 @@
+---
+const { heroImage, heroGif } = Astro.props;
+---
+<style>
+    .hero-image {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+    }
+
+    .hero-gif {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: var(--box-shadow);
+    }
+
+    .hero-gif.visible {
+        opacity: 1;
+    }
+</style>
+
+<div class="hero-image">
+    <img
+            class="hero-png"
+            src={heroImage}
+            alt="Hero Image"
+            loading="lazy"
+    />
+    {heroGif && (
+            <img
+                    class="hero-gif"
+                    src={heroGif}
+                    alt="Animated Hero Image"
+                    loading="lazy"
+                    onload="this.classList.add('visible');"
+            />
+    )}
+</div>
