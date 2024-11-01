@@ -4,152 +4,76 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import HeroImage from "../components/HeroImage.astro";
 import { ViewTransitions } from "astro:transitions";
 
 type entry = "blog" | "projects";
 type Props = CollectionEntry<entry>["data"];
 
-const { title, description, pubDate, updatedDate, heroImage, heroGif }: Props =
-    Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroGif }: Props = Astro.props;
 ---
 
 <html lang="en">
-    <head>
-        <ViewTransitions />
-        <BaseHead
+<head>
+    <ViewTransitions />
+    <BaseHead
             title={title}
             description={description}
             image={heroGif ? heroGif : heroImage}
-        />
-        <style>
-            main {
-                width: calc(100% - 2em);
-                max-width: 100%;
-                margin: 0;
-                color: var(--color-text);
-            }
-            .hero-image {
-                width: 100%;
-            }
-            .hero-image img {
-                display: block;
-                margin: 0 auto;
-                border-radius: 12px;
-                box-shadow: var(--box-shadow);
-            }
-            .prose {
-                width: 720px;
-                max-width: calc(100% - 2em);
-                margin: auto;
-                padding: 1em;
-            }
-            .title {
-                margin-bottom: 1em;
-                padding: 1em 0;
-                text-align: center;
-                line-height: 1;
-            }
-            .title h1 {
-                margin: 0 0 0.5em 0;
-            }
-            .date {
-                margin-bottom: 0.5em;
-                color: rgb(var(--color-date));
-            }
-            .last-updated-on {
-                font-style: italic;
-            }
-        </style>
-    </head>
-    <body>
-        <Header />
-        <main>
-            <article>
-                <div class="hero-image">
-                    {
-                        heroImage && (
-                            <img
-                                id="heroImg"
-                                width={1020}
-                                height={510}
-                                src={heroImage}
-                                data-src={heroGif ? heroGif : heroImage}
-                                alt="hero image"
-                                loading="lazy"
-                            />
-                        )
-                    }
+    />
+    <style>
+        main {
+            width: calc(100% - 2em);
+            max-width: 100%;
+            margin: 0;
+            color: var(--color-text);
+        }
+        .prose {
+            width: 720px;
+            max-width: calc(100% - 2em);
+            margin: auto;
+            padding: 1em;
+        }
+        .title {
+            margin-bottom: 1em;
+            padding: 1em 0;
+            text-align: center;
+            line-height: 1;
+        }
+        .title h1 {
+            margin: 0 0 0.5em 0;
+        }
+        .date {
+            margin-bottom: 0.5em;
+            color: rgb(var(--color-date));
+        }
+        .last-updated-on {
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<Header />
+<main>
+    <article>
+        <HeroImage heroImage={heroImage} heroGif={heroGif} />
+        <div class="prose" transition:animate="fade">
+            <div class="title">
+                <div class="date">
+                    <FormattedDate date={pubDate} />
+                    {updatedDate && (
+                            <div class="last-updated-on">
+                                Last updated on <FormattedDate date={updatedDate} />
+                            </div>
+                    )}
                 </div>
-                <div class="prose" transition:animate="fade">
-                    <div class="title">
-                        <div class="date">
-                            <FormattedDate date={pubDate} />
-                            {
-                                updatedDate && (
-                                    <div class="last-updated-on">
-                                        Last updated on{" "}
-                                        <FormattedDate date={updatedDate} />
-                                    </div>
-                                )
-                            }
-                        </div>
-                        <h1>{title}</h1>
-                        <hr />
-                    </div>
-                    <slot />
-                </div>
-            </article>
-        </main>
-        <Footer />
-        <script is:inline>
-            // Function to load the GIF by swapping the src attribute
-            function loadGif(imageElement) {
-                if (imageElement.dataset.src) {
-                    imageElement.src = imageElement.dataset.src;
-                }
-            }
-
-            // Function to set up the IntersectionObserver
-            function observeImage() {
-                const heroImg = document.getElementById("heroImg");
-                if (!heroImg) return;
-
-                const observer = new IntersectionObserver(
-                    (entries, observerInstance) => {
-                        entries.forEach((entry) => {
-                            if (entry.isIntersecting) {
-                                loadGif(heroImg);
-                                observerInstance.unobserve(heroImg); // Stop observing once the GIF is loaded
-                            }
-                        });
-                    },
-                    {
-                        root: null, // Use the viewport as the root
-                        threshold: 0.1, // Trigger when 10% of the image is visible
-                    },
-                );
-
-                observer.observe(heroImg);
-            }
-
-            // Initialize the GIF loading
-            function initializeGifLoading() {
-                observeImage();
-            }
-
-            if (typeof window !== "undefined") {
-                // Initial load
-                document.addEventListener(
-                    "DOMContentLoaded",
-                    initializeGifLoading,
-                );
-
-                // Re-initialize after Astro swaps (view transitions)
-                document.addEventListener(
-                    "astro:after-swap",
-                    initializeGifLoading,
-                );
-            }
-        </script>
-    </body>
+                <h1>{title}</h1>
+                <hr />
+            </div>
+            <slot />
+        </div>
+    </article>
+</main>
+<Footer />
+</body>
 </html>
