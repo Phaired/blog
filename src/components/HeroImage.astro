@@ -48,43 +48,49 @@ const { heroImage, heroGif } = Astro.props;
     }
 </style>
 
-{heroImage &&
-<div class="hero-image-container">
-    <img
-            class="hero-image"
-            src={heroImage}
-            alt="Hero Image"
-            loading="lazy"
-    />
-
-    {heroGif && (
+{
+    heroImage && (
+        <div class="hero-image-container">
             <img
+                class="hero-image"
+                src={heroImage}
+                alt="Hero Image"
+                loading="lazy"
+            />
+
+            {heroGif && (
+                <img
                     class="hero-image hero-gif"
                     src={heroGif}
                     alt="Animated Hero Image"
                     loading="lazy"
                     onload="this.classList.add('visible');"
-            />
-    )}
-</div>}
+                />
+            )}
+        </div>
+    )
+}
 
 <script>
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                const gifImage = entry.target.querySelector('.hero-gif');
-                if (gifImage && !gifImage.classList.contains('visible')) {
-                    gifImage.classList.add('visible');
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const gifImage = entry.target.querySelector(".hero-gif");
+                    if (gifImage && !gifImage.classList.contains("visible")) {
+                        gifImage.classList.add("visible");
+                    }
+                    observer.unobserve(entry.target);
                 }
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        rootMargin: '50px 0px',
-        threshold: 0.1
-    });
+            });
+        },
+        {
+            rootMargin: "50px 0px",
+            threshold: 0.1,
+        },
+    );
 
-    document.querySelectorAll('.hero-image-container').forEach((container) => {
+    document.querySelectorAll(".hero-image-container").forEach((container) => {
         observer.observe(container);
     });
 </script>

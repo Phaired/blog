@@ -10,70 +10,74 @@ import { ViewTransitions } from "astro:transitions";
 type entry = "blog" | "projects";
 type Props = CollectionEntry<entry>["data"];
 
-const { title, description, pubDate, updatedDate, heroImage, heroGif }: Props = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, heroGif }: Props =
+    Astro.props;
 ---
 
 <html lang="en">
-<head>
-    <ViewTransitions />
-    <BaseHead
+    <head>
+        <ViewTransitions />
+        <BaseHead
             title={title}
             description={description}
             image={heroGif ? heroGif : heroImage}
-    />
-    <style>
-        main {
-            width: calc(100% - 2em);
-            max-width: 100%;
-            margin: 0;
-            color: var(--color-text);
-        }
-        .prose {
-            width: 720px;
-            max-width: calc(100% - 2em);
-            margin: auto;
-            padding: 1em;
-        }
-        .title {
-            margin-bottom: 1em;
-            padding: 1em 0;
-            text-align: center;
-            line-height: 1;
-        }
-        .title h1 {
-            margin: 0 0 0.5em 0;
-        }
-        .date {
-            margin-bottom: 0.5em;
-            color: rgb(var(--color-date));
-        }
-        .last-updated-on {
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
-<Header />
-<main>
-    <article>
-        <HeroImage heroImage={heroImage} heroGif={heroGif} />
-        <div class="prose" transition:animate="fade">
-            <div class="title">
-                <div class="date">
-                    <FormattedDate date={pubDate} />
-                    {updatedDate && (
-                            <div class="last-updated-on">
-                                Last updated on <FormattedDate date={updatedDate} />
-                            </div>
-                    )}
+        />
+        <style>
+            main {
+                width: calc(100% - 2em);
+                max-width: 100%;
+                margin: 0;
+                color: var(--color-text);
+            }
+            .prose {
+                width: 720px;
+                max-width: calc(100% - 2em);
+                margin: auto;
+                padding: 1em;
+            }
+            .title {
+                margin-bottom: 1em;
+                padding: 1em 0;
+                text-align: center;
+                line-height: 1;
+            }
+            .title h1 {
+                margin: 0 0 0.5em 0;
+            }
+            .date {
+                margin-bottom: 0.5em;
+                color: rgb(var(--color-date));
+            }
+            .last-updated-on {
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <main>
+            <article>
+                <HeroImage heroImage={heroImage} heroGif={heroGif} />
+                <div class="prose" transition:animate="fade">
+                    <div class="title">
+                        <div class="date">
+                            <FormattedDate date={pubDate} />
+                            {
+                                updatedDate && (
+                                    <div class="last-updated-on">
+                                        Last updated on{" "}
+                                        <FormattedDate date={updatedDate} />
+                                    </div>
+                                )
+                            }
+                        </div>
+                        <h1>{title}</h1>
+                        <hr />
+                    </div>
+                    <slot />
                 </div>
-                <h1>{title}</h1>
-                <hr />
-            </div>
-            <slot />
-        </div>
-    </article>
-</main>
-<Footer />
-</body>
+            </article>
+        </main>
+        <Footer />
+    </body>
 </html>
