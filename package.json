@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "astro-compress": "^2.3.5",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "prettier-plugin-astro": "^0.14.1"
   }
 }
